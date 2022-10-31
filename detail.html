@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>assingment</title>
+</head>
+
+<body>
+   
+    
+
+    <div class="contai">
+      
+    </div>
+    <h1>
+        Neighbour Countries
+        </h1>
+    <div class="nebr">
+       
+    </div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const country = urlParams.get('greeting');
+  
+     const elm=document.querySelector('.contai');
+     const ego=document.querySelector('.nebr');
+window.onload=async()=>{
+    await fetch(`https://restcountries.com/v3.1/name/${country}?fullText=true`).then(function (res) {
+
+return res.json();
+}).then(function (data) {
+    console.log(data);
+
+const im=data[0].flags.svg;
+
+const date = new Date().toLocaleString();
+ console.log(date);
+elm.innerHTML=`
+<div class="inio">
+<h1 class="count">${data[0].name.common}</h1>
+        <div class="flags">
+            <a href=""><img src="${im}" alt="" width="400px"height="400px" ></a>
+        </div>
+    </div>
+<div class="incon">
+        <div class="namenati">
+            <p>Native Name: ${data[0].altSpellings[1]}</p>
+        </div>
+        <div class="capiti">
+            <p>Capital: ${data[0].capital[0]}</p>
+        </div>
+        <div class="popula">
+            <p>population: ${data[0].population}</p>
+        </div>
+        <div class="region">
+            <p>Region: ${data[0].region}</p>
+        </div>
+        <div class="sub-reg">
+            <p>Sub-region: ${data[0].subregion}</p>
+        </div>
+        <div class="are">
+            <p>Area: ${data[0].area}</p>
+        </div>
+        <div class="countcod">
+            <p>Country Code: ${data[0].idd.root+data[0].idd.suffixes[0]}</p>
+        </div>
+        <div class="languag">
+            <p>Languages: ${Object.values(data[0].languages).toString().split(",").join(",")}</p>
+        </div>
+        <div class="currenc">
+            <p>Currencies: ${data[0].currencies[Object.keys(data[0].currencies)].name}</p>
+        </div>
+        <div class="timzon">
+            <p>Timezones: ${data[0].timezones}</p>
+        </div>
+        </div>`;
+        console.log(data[0].borders[0]);
+        const len=data[0].borders.length;
+        for(i=0;i<len;i++){
+            fetch(`https://restcountries.com/v3.1/alpha/${data[0].borders[i]}`).then((rest)=> {
+
+                return rest.json();
+                }).then((dat)=>{
+                    console.log(dat[0].flags.svg)
+                    ego.innerHTML+=`<div class="flag">
+                    <a href=""><img src="${dat[0].flags.svg}" alt="" width="100px"height="100px"></a>
+                </div>`;
+
+                });
+        }
+});
+}
+</script>
+</html>
